@@ -2,7 +2,10 @@
   "name": "lin-editorial-portfolio",
   "version": "1.0.0",
   "private": true,
+<<<<<<< HEAD
   "type": "module",
+=======
+>>>>>>> 1c14221bdc069b54768a9fad1dfbfaa0f8c0d947
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
