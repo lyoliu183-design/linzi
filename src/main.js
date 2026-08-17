@@ -1,0 +1,30 @@
+const copy = {
+  zh: { navStories:'故事',navJournal:'随笔',navAbout:'关于',contact:'联系我们',eyebrow:'影像 · 文字 · 生活',role:'创作者与生活记录者',intro:'我在平凡日常里寻找值得被记住的瞬间，以影像和文字，记录人与城市之间温柔的联系。',explore:'浏览精选故事',storiesTitle:'故事',viewStories:'查看全部故事 →',story1:'光停留的地方',story1Desc:'城市清晨，窗边与一个人的安静片刻。',story2:'昨日的影子',story2Desc:'旧街、红墙，以及那些未曾说完的话。',story3:'漫游，观察，记住',story3Desc:'在辽阔风景里，重新理解时间。',journalTitle:'随笔',journalDesc:'关于生活、创造与远方的零散思考。',readJournal:'阅读随笔',aboutTitle:'关于',aboutDesc:'我叫林子，英文名 Lin。好奇心带我去往不同的地方，也让我持续观察、记录与表达。',knowMore:'进一步了解',momentsTitle:'近期片段',moment1:'山与雾',moment1Desc:'一个关于出发的短篇',moment2:'红色房间',moment2Desc:'光线与记忆的练习',moment3:'很远，也很近',moment3Desc:'海岸边的独处时光',footerKicker:'保持联系',footerTitle:'让我们聊聊。',footerDesc:'如果你对我的作品感兴趣，或有一个想共同完成的计划，欢迎联系我。',wechatEyebrow:'微信联系',scanTitle:'扫码添加 Lin',scanDesc:'添加时请简单备注来意，我会尽快回复。',scanHint:'微信扫一扫 · 添加好友'},
+  en: { navStories:'Stories',navJournal:'Journal',navAbout:'About',contact:'Contact',eyebrow:'Images · Words · Life',role:'Creator & Visual Storyteller',intro:'I look for moments worth remembering in everyday life, using images and words to trace the quiet connections between people and cities.',explore:'Explore selected stories',storiesTitle:'Stories',viewStories:'View all stories →',story1:'Where the Light Stays',story1Desc:'A quiet morning by the window as the city wakes.',story2:'Shadows of Yesterday',story2Desc:'Old streets, red walls, and things left unsaid.',story3:'Wander, Observe, Remember',story3Desc:'Learning to understand time in wide-open landscapes.',journalTitle:'Journal',journalDesc:'Notes on life, creativity, and places far away.',readJournal:'Read the journal',aboutTitle:'About',aboutDesc:'I’m Lin. Curiosity takes me to unfamiliar places and keeps me observing, documenting, and creating.',knowMore:'Discover more',momentsTitle:'Recent Moments',moment1:'Mountain & Mist',moment1Desc:'A short story about setting out',moment2:'The Red Room',moment2Desc:'An exercise in light and memory',moment3:'Far Away, Close By',moment3Desc:'Solitude along the coast',footerKicker:'Stay in touch',footerTitle:'Let’s talk.',footerDesc:'If my work resonates with you, or you have an idea we could shape together, I’d love to hear from you.',wechatEyebrow:'WeChat',scanTitle:'Connect with Lin',scanDesc:'Scan the QR code and add a short note. I’ll get back to you soon.',scanHint:'Scan with WeChat · Add contact'}
+};
+
+let language = localStorage.getItem('lin-language') || 'zh';
+const switcher = document.querySelector('.language-switch');
+function setLanguage(lang) {
+  language = lang; localStorage.setItem('lin-language', lang); document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.dataset.i18n; if(copy[lang][key]) el.textContent = copy[lang][key]; });
+  switcher.querySelectorAll('span').forEach((el,i)=>el.classList.toggle('active', lang === (i===0?'zh':'en')));
+  document.title = lang === 'zh' ? '林子 LIN — 个人网站' : 'LIN — Personal Website';
+}
+switcher.addEventListener('click', () => setLanguage(language === 'zh' ? 'en' : 'zh'));
+setLanguage(language);
+
+const modal = document.querySelector('.modal');
+const openModal = () => { modal.classList.add('is-open'); modal.setAttribute('aria-hidden','false'); document.body.classList.add('locked'); modal.querySelector('.modal-close').focus(); };
+const closeModal = () => { modal.classList.remove('is-open'); modal.setAttribute('aria-hidden','true'); document.body.classList.remove('locked'); };
+document.querySelectorAll('[data-open-contact]').forEach(btn => btn.addEventListener('click', openModal));
+document.querySelectorAll('[data-close-contact]').forEach(btn => btn.addEventListener('click', closeModal));
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+
+const menu = document.querySelector('.mobile-menu');
+const menuButton = document.querySelector('.menu-button');
+function setMenu(open){ menu.classList.toggle('is-open',open); menu.setAttribute('aria-hidden',String(!open)); menuButton.setAttribute('aria-expanded',String(open)); document.body.classList.toggle('locked',open); }
+menuButton.addEventListener('click',()=>setMenu(true)); document.querySelector('.menu-close').addEventListener('click',()=>setMenu(false)); menu.querySelectorAll('a,button').forEach(el=>el.addEventListener('click',()=>setMenu(false)));
+
+const observer = new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
